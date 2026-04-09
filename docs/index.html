@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Карточки спокойствия</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #f1f5f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px 16px 40px 16px;
+            color: #0f172a;
+        }
+
+        /* Заголовок как в приложении */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e293b, #2c3e66);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .badge-count {
+            background: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #334155;
+        }
+
+        /* Описание под заголовком */
+        .sub {
+            color: #475569;
+            margin-bottom: 24px;
+            font-size: 15px;
+            font-weight: 400;
+            padding-left: 4px;
+            border-left: 3px solid #94a3b8;
+        }
+
+        /* Сетка карточек */
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Общий стиль карточки */
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 20px 20px 24px 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        
+        /* Цветовая маркировка */
+        .card-trigger { border-top: 6px solid #f97316; }   /* тревога — оранжевый */
+        .card-panic { border-top: 6px solid #ef4444; }     /* боль в груди — красный */
+        .card-conflict { border-top: 6px solid #eab308; }  /* ссора — жёлтый */
+        .card-resentment { border-top: 6px solid #8b5cf6; } /* обида — фиолетовый */
+        .card-fear { border-top: 6px solid #06b6d4; }      /* страх "я не тот" — бирюзовый */
+        .card-daily { border-top: 6px solid #10b981; }     /* ежедневное — зелёный */
+
+        /* Заголовок карточки */
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .emoji-badge {
+            font-size: 32px;
+            background: #f8fafc;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 640;
+            letter-spacing: -0.3px;
+        }
+        .trigger-tag {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e293b;
+            display: inline-block;
+            margin-bottom: 14px;
+        }
+
+        /* Текст и списки */
+        .card-content {
+            margin-top: 6px;
+        }
+        .instruction {
+            font-size: 16px;
+            font-weight: 500;
+            color: #0f172a;
+            margin: 12px 0 8px 0;
+        }
+        .card-text {
+            font-size: 15px;
+            line-height: 1.45;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            padding-left: 28px;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        .checklist li:before {
+            content: "●";
+            position: absolute;
+            left: 8px;
+            color: #3b82f6;
+            font-size: 14px;
+        }
+        hr {
+            margin: 18px 0 12px 0;
+            border: 0;
+            height: 1px;
+            background: #eef2ff;
+        }
+        .quote {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 20px;
+            font-style: normal;
+            font-weight: 500;
+            color: #2563eb;
+            margin-top: 12px;
+            font-size: 14px;
+            border-left: 4px solid #94a3b8;
+        }
+        .badge-action {
+            background: #eef2ff;
+            border-radius: 24px;
+            padding: 10px 16px;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 12px;
+        }
+
+        /* footer */
+        .footer-note {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-header">
+    <h1>карточки<br>спокойствия</h1>
+    <div class="badge-count">6 опор</div>
+</div>
+<div class="sub">
+    🌊 когда тяжело — открой нужную карточку. дыши и делай по шагам.
+</div>
+
+<div class="cards-grid">
+    
+    <!-- КАРТОЧКА 1: Тревога (страх ухода/измены) -->
+    <div class="card card-trigger">
+        <div class="card-title">
+            <div class="emoji-badge">🌪️</div>
+            <h2>Тревога</h2>
+        </div>
+        <div class="tag-group"><span class="trigger-tag">страх, что она уйдёт / изменит</span></div>
+        <div class="card-content">
+            <div class="instruction">🚫 СТОП</div>
+            <div class="card-text">Не пиши. Не проверяй. Не спрашивай «ты меня любишь?».</div>
+            <div class="instruction">⏱️ Пауза 20 минут</div>
+            <ul class="checklist">
+                <li>Выйди на улицу или умойся холодной водой</li>
+                <li>10 глубоких выдохов (выдох длиннее вдоха)</li>
+                <li>Скажи себе: «это тревога, а не реальность. она со мной»</li>
+            </ul>
+            <hr>
+            <div class="quote">📢 Если тревога не ушла: «Меня накрыло, мне нужно услышать, что у нас всё хорошо. Скажи это, пожалуйста».</div>
+            <div class="badge-action">✔️ Её плохое настроение — не про тебя</div>
+        </div>
+    </div>
+
+    <!-- КАРТОЧКА 2: Боль в груди / слёзы -->
+    <div class="card card-panic">
+        <div class="card-title">
+            <div class="emoji-badge">❤️‍🩹</div>
+            <h2>Боль в груди</h2>
+        </div>
+        <div class="tag-group"><span class="trigger-tag">колет / тяжело дышать / плачу</span></div>
+        <div class="card-content">
+            <div class="instruction">😢 Не держи в себе</div>
+            <ul class="checklist">
+                <li>Найди место, где ты один</li>
+                <li>Сядь, ноги на пол, скажи вслух: «Мне страшно, я боюсь, что я не тот, кто ей нужен»</li>
+                <li>Разреши себе плакать — это снимает спазм</li>
+                <li>После слёз: 3 медленных выдоха и «я справился, я в безопасности»</li>
+            </ul>
+            <div class="quote">🫂 Если боль в груди не прошла через час после слез — обратись к врачу, но помни: сердце в порядке, это нервы.</div>
+        </div>
+    </div>
+
+    <!-- КАРТОЧКА 3: Ссора (меня что-то не устраивает) -->
+    <div class="card card-conflict">
+        <div class="card-title">
+            <div class="emoji-badge">⚡</div>
+            <h2>Хочу начать ссору</h2>
+        </div>
+        <div class="tag-group"><span class="trigger-tag">меня что-то бесит / не устраивает</span></div>
+        <div class="card-content">
+            <div class="instruction">⏳ Правило 24 часов</div>
+            <div class="card-text">Подожди до завтра. Через день большинство «проблем» — просто тревога.</div>
+            <div class="instruction">🗣️ Если всё ещё важно — говори без обвинений:</div>
+            <ul class="checklist">
+                <li><strong>❌ «Ты меня игнорируешь»</strong> → ✅ «Я чувствую тревогу, когда мы долго не общаемся»</li>
+                <li><strong>❌ «Тебе всё равно»</strong> → ✅ «Мне важно услышать твой голос»</li>
+                <li><strong>❌ «Ты всегда так»</strong> → ✅ «В этот раз мне было больно, потому что...»</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- КАРТОЧКА 4: Она обижается в ответ -->
+    <div class="card card-resentment">
+        <div class="card-title">
+            <div class="emoji-badge">🛡️</div>
+            <h2>Обида в ответ</h2>
+        </div>
+        <div class="tag-group"><span class="trigger-tag">она обижается на мою боль</span></div>
+        <div class="card-content">
+            <div class="instruction">❗ Ты не виноват</div>
+            <ul class="checklist">
+                <li>Не беги извиняться</li>
+                <li>Не проглатывай свою боль</li>
+                <li>Скажи: «Я вижу, что ты обиделась. Это не было моей целью. Давай вернёмся, когда оба успокоимся»</li>
+                <li>Выйди из комнаты, дай паузу</li>
+            </ul>
+            <hr>
+            <div class="quote">🔄 Через час или завтра: «Мне важно, чтобы мы говорили о боли. Как нам делать это, чтобы ты не чувствовала обвинения?»</div>
+        </div>
+    </div>
+
+    <!-- КАРТОЧКА 5: Я не тот, кто ей нужен -->
+    <div class="card card-fear">
+        <div class="card-title">
+            <div class="emoji-badge">🧩</div>
+            <h2>«Я не тот, кто ей нужен»</h2>
+        </div>
+        <div class="tag-group"><span class="trigger-tag">чувство неполноценности</span></div>
+        <div class="card-content">
+            <div class="instruction">📋 Факты против страха</div>
+            <ul class="checklist">
+                <li>Страх: «я не тот, кто ей нужен» → <strong>Факт: она со мной. она не ушла.</strong></li>
+                <li>Страх: «она найдёт лучше» → <strong>Факт: она не ищет. она здесь.</strong></li>
+                <li>Страх: «я всё порчу» → <strong>Факт: ссоры бывают, но мы миримся.</strong></li>
+            </ul>
+            <div class="quote">«Я опираюсь на факты. Прямо сейчас всё хорошо. Я справлюсь, даже если случится страшное. Но оно не случилось».</div>
+        </div>
+    </div>
+
+    <!-- КАРТОЧКА 6: Ежедневная опора -->
+    <div class="card card-daily">
+        <div class="card-title">
+            <div class="emoji-badge">🧘‍♂️</div>
+            <h2>Каждый день</h2>
+        </div>
+        <div class="tag-group"><span class="trigger-tag">напоминание</span></div>
+        <div class="card-content">
+            <ul class="checklist">
+                <li>Я имею право на свои чувства</li>
+                <li>Её плохое настроение — не про меня</li>
+                <li>Если я спокоен — она спокойнее</li>
+                <li>Обида не помогает. Запрос помогает</li>
+                <li>Я переживу любую боль. Но прямо сейчас всё хорошо</li>
+            </ul>
+            <div class="badge-action" style="background:#e6f7ec;">✨ перестать исчезать в страхе её потерять</div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-note">
+    Просто дыши. Ты не один. Эти карточки — твоя опора.
+</div>
+
+</body>
+</html>
